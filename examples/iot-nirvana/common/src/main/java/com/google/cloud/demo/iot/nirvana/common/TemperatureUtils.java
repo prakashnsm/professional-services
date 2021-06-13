@@ -25,6 +25,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.apache.beam.repackaged.beam_sdks_java_core.org.apache.commons.lang3.StringUtils;
 import org.apache.commons.codec.binary.Hex;
 
 /** Helper class to generate cities test data */
@@ -36,6 +39,29 @@ public class TemperatureUtils {
 
   private static final String READ_FILE_ERR = "Cannot load content of resource file %s. Cause: %s";
 
+  
+  /**
+   * Create a test dataset of cities and return it as a map whose key is the MD5 of the latitude and
+   * longitude of the city
+   */
+  public static int getCityIndex(String cityName, String key) throws FormatException {
+    String citiesJson = loadJsonFromFile();
+    City.Builder[] cities = City.fromJsonArray(citiesJson);
+    AtomicInteger indx = new AtomicInteger(0);
+    for (City.Builder cityBuilder : cities) {
+      City city = cityBuilder.build();
+      int index = indx.getAndIncrement();
+      if((StringUtils.isNoneBlank(cityName) 
+    		  && cityName.toUpperCase().equals(city.getCity().toUpperCase())) ||
+    		  (StringUtils.isNoneBlank(cityName) 
+    	    		  && city.getCity().toUpperCase().startsWith(cityName.toUpperCase())) ||
+    		  	(StringUtils.isNoneBlank(key) && key.equals(generateCityKey(city)))) {
+    	  return index;
+      }
+    }
+    return -1;
+  }
+  
   /**
    * Create a test dataset of cities and return it as a map whose key is the MD5 of the latitude and
    * longitude of the city

@@ -1,0 +1,4 @@
+{
+    "maven.executable.preferMavenWrapper": false,
+    "java.configuration.updateBuildConfiguration": "automatic"
+}

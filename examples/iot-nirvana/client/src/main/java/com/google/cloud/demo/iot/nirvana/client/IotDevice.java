@@ -127,7 +127,7 @@ public abstract class IotDevice {
         }
       }
     } catch (MqttException e) {
-      String message = String.format("Failed to send messages. Cause: %s", e.getMessage());
+      String message = String.format("Failed to send messages. Cause: %s - City: %s, DeviceId: %s ", e.getMessage(), getDeviceId());
       LogUtils.logDebug(LOGGER, getDeviceId(), getGcpProjectId(), message);
       throw new ClientException(message, e);
     }

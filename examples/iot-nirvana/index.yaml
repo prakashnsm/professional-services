@@ -1,0 +1,7 @@
+indexes:
+
+- kind: CityTemperature
+  ancestor: yes
+  properties:
+  - name: __key__
+    direction: desc

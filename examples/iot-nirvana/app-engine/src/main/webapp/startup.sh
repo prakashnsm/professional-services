@@ -26,7 +26,8 @@ REGION=[REGION]
 TMP_FOLDER=/tmp/iot-core
 CLIENT_APP_BASE_NAME=google-cloud-demo-iot-nirvana-client
 CLIENT_JAR=${CLIENT_APP_BASE_NAME}-jar-with-dependencies.jar
-INSTANCE_NUMBER=$(curl http://metadata/computeMetadata/v1beta1/instance/attributes/instance-number)
+#INSTANCE_NUMBER=$(curl http://metadata/computeMetadata/v1beta1/instance/attributes/instance-number)
+INSTANCE_NUMBER=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/instance-number" -H "Metadata-Flavor: Google")
 INDEX_START=$[$INSTANCE_NUMBER*10]
 
 # Create a temporary folder and copy the client
